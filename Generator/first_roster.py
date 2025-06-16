@@ -90,17 +90,3 @@ def generate_nurse_data(n_nurses, n_days=14, n_on_nurses=5, on_min_days=1, on_ma
 
     return schedule_params
 
-
-    
-"""
-# Example instance generation
-nurse_data = generate_nurse_data(
-    n_nurses=6,  
-    n_on_nurses=2, on_min_days=1, on_max_days=3,  
-    n_off_nurses=2, off_min_days=2, off_max_days=4  
-)
-
-# Save to JSON
-formatted_json_str = json.dumps(nurse_data, indent=4)
-with open('d14/instance1.json', 'w') as json_file:
-    json_file.write(formatted_json_str)
