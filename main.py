@@ -1,9 +1,13 @@
 from Generator.first_roster import generate_nurse_data
-from Generator.initial_roster import solve_nurse_scheduling
+from Generator.initial_roster import solve_nurse_scheduling, load_config, save_config
+import Generator.transform_array as transform
+import Generator.check_hc_inital as hc
 from Generator.add_unav import simulate_sick_days_for_file
 
 import json
-
+import os
+import numpy as np
+from pathlib import Path
 
 ######################### ##################################
 #########       Inital Roster     ##########################
@@ -28,7 +32,7 @@ with open('Instances/instance1.json', 'w') as json_file:
 #############################################################
  
 
-folder_path = Path(__file__).parent.parent / 'Instances'
+folder_path = Path(__file__).parent / 'Instances'
 
 # Iterate over all generted instences
 for filename in os.listdir(folder_path):
@@ -78,9 +82,9 @@ for filename in os.listdir(folder_path):
             
         on_request = day_on_requests
         off_request  = transform.transform_shifts_for_ip(day_off_requests, nurses_position, shifts)
-
-        new_array, cost = solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, min_consec_penalty, change_penalty, output=False)
-        print(new_array)
+        print("Start IP-Sovler for inital Roster...")
+        new_array, cost = solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, nurses_position, output=False)
+        """print(new_array)
         print("Zu Kosten: ", cost)
         print("HC2: ", hc.hc2_forbidden_pattern(new_array, n_days))
         print("HC3: ", hc.hc3_max_shifts(new_array, max_work_total))
@@ -88,8 +92,8 @@ for filename in os.listdir(folder_path):
         #print("HC5: ", hc.hc5_min_total_minutes(new_array, hours_per_day, min_minutes_total))
         print("HC6: ", hc.hc6_max_consec_shifts(new_array, max_consec_days))
         print("HC7: ", hc.hc7_min_consec_days(new_array, min_consec_days))
-        print("HC8: ", hc.hc8_max_work_weekends(new_array, max_work_weekend))
-
+        print("HC8: ", hc.hc8_max_work_weekends(new_array, max_work_weekend))"""
+        print("Inital Roster added..")
         data_list = new_array.tolist()
 
         config["initial_roster"] = data_list
@@ -97,12 +101,18 @@ for filename in os.listdir(folder_path):
 
 
 
-
 ######################### ##################################
 #########      Add Unav            ##################
 #############################################################
- 
 
+
+## Hier noch eine Loop einbauen? Damit alle Files angepackt werden.
+file = Path(__file__).parent / 'Instances/instance1.json'
+simulate_sick_days_for_file(
+     filename=file, 
+      n_unav_nurses=1, unav_min_days=1, unav_max_days=2 , 
+     output_filename=file
+ )
 
 
 

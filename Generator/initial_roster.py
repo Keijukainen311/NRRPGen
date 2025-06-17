@@ -2,13 +2,12 @@ from docplex.mp.model import Model
 import pandas as pd
 import numpy as np
 import json 
-import sys
+#import sys
 import os
 from pathlib import Path
 
-import transform_array as transform
-
-import check_hc_inital as hc
+import Generator.transform_array as transform
+import Generator.check_hc_inital as hc
 
 # Read Parameter
 def load_config(file_path):
@@ -21,10 +20,8 @@ def save_config(file_path, config):
         json.dump(config, file, indent=4)
 
 
-def solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, min_consec_penalty, change_penalty, output=False):
-    
-    #initial_solution_dict = transform.array_to_dict(array)
-        
+def solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, nurses_position, output=False):
+            
     # Create model
     mdl = Model(name="nurse_scheduling")
 
@@ -387,3 +384,5 @@ if __name__ == "__main__":
 
             config["initial_roster"] = data_list
             save_config(file_path, config)
+
+

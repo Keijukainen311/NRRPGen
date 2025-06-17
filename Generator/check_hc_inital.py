@@ -1,6 +1,7 @@
 import json 
 import numpy as np
 import os
+from pathlib import Path
 
 
 # Parameter lesen
@@ -19,11 +20,10 @@ def load_config(file_path):
 
 
 def hc1_one_shift(array):
-    #Aktuell immer True, weil Array nicht mehrfachbesetzung pro tag hergibt
+    #Always true, the datamodel dont allow multiple assigened shifts
     return True
 
 
-#noch mal prüfen was ich übergebe...
 def hc2_forbidden_pattern(array, n_days):
     #if after evening morning or late, than repeat for this 
     for work_days in array:
@@ -54,29 +54,10 @@ def hc4_max_total_minutes(array):
     return True
 
 
-"""
-auskommentiert, wenn mit unav_nurse, damit die tage unav auch addiert werden...
-def hc5_min_total_minutes(array, hours_per_day, min_minutes_total):
-    for nurse_schedule in array:
-        #Zähle jeden Tag der gearbeitet wird...(der nicht 0 ist)
-        worked_days = sum(1 for day in nurse_schedule if day != 0) 
-        #print(worked_days)
-        total_hours = worked_days * hours_per_day
-        #print(total_hours)
-        
-        if total_hours < min_minutes_total:
-            #print(min_minutes_total)
-            #print(total_hours)
-            return False
-    return True"""
-
-
 def hc5_min_total_minutes(array, hours_per_day, min_minutes_total, nurse_unav, nurse_position):
     for position, nurse_schedule in enumerate(array):
         nurse_id = [n_id for n_id, pos in nurse_position.items() if pos == position][0]
         unav_days = nurse_unav.get(nurse_id, set())
-        
-        # wenn arbeit oder unav summieren...
         worked_days = sum(1 for day_idx, day in enumerate(nurse_schedule) if day != 0 or day_idx in unav_days)
         total_hours = worked_days * hours_per_day
         
@@ -134,8 +115,6 @@ def hc8_min_consec_days_off(array, min_consec_days_off):
     return True
 
 
-
-#check übergabeparameter
 def hc8_max_work_weekends(array, max_work_weekend):
     n_nurses = len(array)
     n_days = len(array[0])
@@ -159,50 +138,18 @@ def hc8_max_work_weekends(array, max_work_weekend):
 
 
 
-
-def hc9_nurse_unavailable(current_solution, nurses_position, nurse_unav):
-    # Iterate over each nurse using the correct position from nurses_position
-    #print(current_solution)
-    for nurse_id, position in nurses_position.items():
-        #print(nurse_id)
-        #print(position)
-        nurse_schedule = current_solution[position]
-        
-        # Check if nurse_id is in nurse_unav
-        if nurse_id in nurse_unav:
-                
-            # Iterate over the days the nurse is unavailable
-            for unavailable_day in nurse_unav[nurse_id]:
-
-                #print(unavailable_day)
-                if nurse_schedule[unavailable_day] != 0:  # If the nurse is scheduled on an unavailable day
-                    #print("HC 9 kaputt")
-                    return False  # Violation found
-
-    return True  # No violations found
-
-
 if __name__ == "__main__":
-        #select config an write it into paramter.json
-    # Ordnerpfad
-    folder_path = 'C:/Users/Standardbenutzer/iCloudDrive/Thesis/Implementation/Instances/d28'
-    #parameter = 'C:/Users/Standardbenutzer/iCloudDrive/Thesis/Implementation/Instances/d14/instance2.json'
+    #select config an write it into paramter.json
+    folder_path = Path(__file__).parent.parent / 'Instances'
 
-
-    # Über die Dateien im Ordner iterieren
+    # Iterate over all Files..
     for filename in os.listdir(folder_path):
         file_path = os.path.join(folder_path, filename)
-        #print("Start: ", file_path)
-        # Überprüfen, ob es sich um eine Datei handelt (keine Unterordner)
         if os.path.isfile(file_path):
-            #print(f"Datei gefunden: {file_path}")
-
             input_file = file_path
 
-        # Config laden
-
+        # Config
         config = load_config(input_file)
-        #config = load_config(parameter)
 
         # Parameter zuweisen
         n_nurses = config['n_nurses']
@@ -239,10 +186,6 @@ if __name__ == "__main__":
             [1 1 1 1 0 0 1 2 3 3 3 0 0 1 1 1 1 0 0 2 3 3 0 0 1 1 0 0]]"""
 
 
-        #print(input_file)
-        #result_backup = result_backup.replace("[", "").replace("]", "").split()
-        #result_backup = list(map(int, result_backup))
-
         # Convert the list to a 2D NumPy array with the correct shape
         array = np.array(initial_roster).reshape(n_nurses, n_days)
         print(filename)
@@ -256,5 +199,4 @@ if __name__ == "__main__":
         print("HC7: ", hc7_min_consec_days(array, min_consec_days))
         print("HC8: ", hc8_max_work_weekends(array, max_work_weekend))
         print(nurses_position)
-        #print("HC9: ", hc9_nurse_unavailable(array, nurses_position, nurse_unav))
 

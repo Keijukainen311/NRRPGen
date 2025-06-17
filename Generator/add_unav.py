@@ -51,121 +51,13 @@ def simulate_sick_days_for_file(filename, n_unav_nurses, unav_min_days, unav_max
     # Save the modified data to a new JSON file
     save_to_json(nurse_data, output_filename)
 
-"""# Instance 1:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance1.json', 
-      n_unav_nurses=1, unav_min_days=1, unav_max_days=2 , 
-     output_filename='d28_w_roster/instance1.json'
- )
-   
-# Instance 2:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance2.json', 
-      n_unav_nurses=3, unav_min_days=1, unav_max_days=2  ,
-     output_filename='d28_w_roster/instance2.json'
- )
 
-# Instance 3
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance3.json', 
-     n_unav_nurses=1, unav_min_days=1, unav_max_days=2  ,
-     output_filename='d28_w_roster/instance3.json'
- )
-# Instance 4:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance4.json', 
-     n_unav_nurses=3, unav_min_days=1, unav_max_days=2 ,
-     output_filename='d28_w_roster/instance4.json'
- )
-# Instance 5:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance5.json', 
-    n_unav_nurses=1, unav_min_days=1, unav_max_days=2  , 
-     output_filename='d28_w_roster/instance5.json'
- )
-# Instance 6:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance6.json', 
-     n_unav_nurses=3, unav_min_days=1, unav_max_days=2  , 
-     output_filename='d28_w_roster/instance6.json'
- )
 
-# Instance 7:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance7.json', 
-    n_unav_nurses=3, unav_min_days=1, unav_max_days=2  , 
-     output_filename='d28_w_roster/instance7.json'
- )
-# Instance 8
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance8.json', 
-     n_unav_nurses=1, unav_min_days=1, unav_max_days=2 , 
-     output_filename='d28_w_roster/instance8.json'
- )
-# Instance 9:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance9.json', 
-     n_unav_nurses=3, unav_min_days=1, unav_max_days=2 , 
-     output_filename='d28_w_roster/instance9.json'
- )
-# Instance 10:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance10.json', 
-     n_unav_nurses=3, unav_min_days=1, unav_max_days=2  , 
-     output_filename='d28_w_roster/instance10.json'
- )
-# Instance 11:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance11.json', 
-     n_unav_nurses=1, unav_min_days=1, unav_max_days=2 , 
-     output_filename='d28_w_roster/instance11.json'
- )
-# Instance 12:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance12.json', 
-     n_unav_nurses=3, unav_min_days=1, unav_max_days=2 , 
-     output_filename='d28_w_roster/instance12.json'
- )
-# Instance 13:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance13.json', 
-      n_unav_nurses=3, unav_min_days=1, unav_max_days=7 , 
-     output_filename='d28_w_roster/instance13.json'
- )
-# Instance 14:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance14.json', 
-     n_unav_nurses=1, unav_min_days=1, unav_max_days=3, 
-     output_filename='d28_w_roster/instance14.json'
- )
-# Instance 15:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance15.json', 
-     n_unav_nurses=1, unav_min_days=1, unav_max_days=7, 
-     output_filename='d28_w_roster/instance15.json'
- )
-# Instance 16:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance16.json', 
-     n_unav_nurses=5, unav_min_days=1, unav_max_days=7, 
-     output_filename='d28_w_roster/instance16.json'
- )
-# Instance 17:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance17.json', 
-     n_unav_nurses=1, unav_min_days=1, unav_max_days=14 ,
-     output_filename='d28_w_roster/instance17.json'
- )"""
-# Instance 18:
-simulate_sick_days_for_file(
-     filename='d14_w_roster/instance18.json', 
-     n_unav_nurses=4, unav_min_days=1, unav_max_days=7, 
-     output_filename='d14_w_roster/instance18.json'
- )
-"""# Instance 19:
-simulate_sick_days_for_file(
-     filename='d28_w_roster/instance19.json', 
-     n_unav_nurses=7, unav_min_days=1, unav_max_days=7, 
-     output_filename='d28_w_roster/instance19.json'
- )
-"""
+if __name__ == "__main__":
+    # Instance 1:
+    simulate_sick_days_for_file(
+        filename='d28_w_roster/instance1.json', 
+        n_unav_nurses=1, unav_min_days=1, unav_max_days=2 , 
+        output_filename='d28_w_roster/instance1.json'
+    )
+    
