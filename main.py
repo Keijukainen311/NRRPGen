@@ -74,6 +74,7 @@ def main():
         max_work_weekend = config['max_work_weekend']
         all_days = np.array(config['all_days'])
         forbidden_pattern = np.array(config['forbidden_pattern'])
+        forbidden_shift = np.array(config['forbidden_pattern_dic'])
         min_nurse = config['min_nurse']
         min_consec_days_off =config['min_consec_days_off']
         day_off_requests = {key: set(value) for key, value in config['day_off_requests'].items()}
@@ -92,7 +93,7 @@ def main():
         on_request = day_on_requests
         off_request  = transform.transform_shifts_for_ip(day_off_requests, nurses_position, shifts)
         print("Start IP-Sovler for inital Roster...")
-        new_array, cost = solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, nurses_position, output=False)
+        new_array, cost = solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, nurses_position, forbidden_shift, output=False)
         print("Inital Roster added..")
         data_list = new_array.tolist()
 

@@ -176,6 +176,7 @@ def generate_nurse_data(n_nurses, n_days=14, n_on_nurses=5, on_min_days=1, on_ma
         "max_work_weekend": 2,
         "all_days": [1, 2, 3],
         "forbidden_pattern": [[3, 1], [3, 2]],
+        "forbidden_pattern_dic":{"Night": ["Day", "Late"],},
         "min_nurse": min_nurse,
         "min_coverage": min_nurse,
         "min_consec_days_off": 2,

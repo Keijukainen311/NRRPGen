@@ -19,7 +19,7 @@ def save_config(file_path, config):
         json.dump(config, file, indent=4)
 
 
-def solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, nurses_position, output=False):
+def solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, max_coverage, max_work_total, min_work_total, max_consec_days, min_consec_days_off,max_work_weekend, required_coverage, min_consec_days, over_penalty, on_penalty, off_penalty, nurses_position, forbidden_shift, output=False):
             
     # Create model
     mdl = Model(name="nurse_scheduling")
@@ -92,9 +92,7 @@ def solve_nurse_scheduling(n_nurses, n_days, shifts, on_request, off_request, ma
             )
 
     # Define forbidden shift pairs, e.g., which shifts can't follow which
-    forbidden_shifts = {
-        "Night": ["Day", "Late"],
-    }
+    forbidden_shifts = forbidden_shift
 
     for i in n_nurses:
         for d in range(1, len(n_days)):
