@@ -1,6 +1,9 @@
 # Readme
 
-## Nurse Scheduling Instance Generator
+## Nurse Re-Rostering Benchmark Dataset
+Then benchmark dataset are stored in  the `Instances/Benchmar` directory. These can be used for performance testing, comparison with other solvers, or evaluating solution quality.
+
+## Nurse Re-Rostering Instance Generator
 
 This repository contains code to generate instances for a nurse scheduling problem. Each instance specifies constraints such as the number of nurses, the scheduling period, and requirements for working and rest periods.
 
