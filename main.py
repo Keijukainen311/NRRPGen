@@ -1,4 +1,4 @@
-from Generator.first_roster import generate_nurse_data
+import Generator.first_roster as fr
 from Generator.initial_roster import solve_nurse_scheduling, load_config, save_config
 import Generator.transform_array as transform
 import Generator.check_hc_inital as hc
@@ -13,79 +13,6 @@ from pathlib import Path
 
 
 
-def get_number_of_instances():
-    while True:
-        try:
-            value = int(input("Number of Instances (1-20): "))
-            if 1 <= value <= 50:
-                return value
-            else:
-                print("Enter the amount of Instances that should be generated (between 1 and 20).")
-        except ValueError:
-            print("Not valid. Enter a valid number between 1 and 20.")
-
-def get_number_of_nurses():
-    options = ["Small", "Medium", "Large", "Mixed"]
-    print("Number of nurses:")
-    print("  Small (6-10 nurses)")
-    print("  Medium Instances (14-22 nurses)")
-    print("  Large Instances (26-30 nurses)")
-    print("  Mixed")
-    while True:
-        choice = input("Choose number of nurses (Small, Medium, Large, Mixed): ").capitalize()
-        if choice in options:
-            return choice
-        else:
-            print("Not valid. Enter Small, Medium, Large or Mixed")
-
-def get_complexity():
-    options = ["Little", "Medium", "Hard", "Mixed"]
-    while True:
-        choice = input("Complexity (Little, Medium, Hard, Mixed): ").capitalize()
-        if choice in options:
-            return choice
-        else:
-            print("Not valid. Enter Little, Medium, Hard or Mixed")
-
-def get_planning_horizon():
-    options = ["14", "28"]
-    while True:
-        choice = input("Planning Horizon (14 days or 28 days): ")
-        if choice in options:
-            return int(choice)
-        else:
-            print("Not valid. Enter 14 or 28.")
-
-
-def get_nurse_count(nurse_category):
-    if nurse_category == "Small":
-        return random.choice([6, 10])
-    elif nurse_category == "Medium":
-        return random.randint(14, 22)
-    elif nurse_category == "Large":
-        return random.choice([26, 30])
-    elif nurse_category == "Mixed":
-        return get_nurse_count(random.choice(["Small", "Medium", "Large"]))
-    else:
-        return "Not valid, try again"
-    
-
-def get_complexity_value(complexity):
-    if complexity == "Little":
-        return (2, 2)
-    elif complexity == "Medium":
-        on = random.randint(3, 5)
-        off = random.randint(3, 5)
-        return (on, off)
-    elif complexity == "Hard":
-        on = random.randint(4, 7)
-        off = random.randint(4, 7)
-        return (on, off)
-    elif complexity == "Mixed":
-        return get_complexity_value(random.choice(["Little", "Medium", "Hard"]))
-    else:
-        return ("Invalid", "Invalid")
-
 
 def main():
 
@@ -95,10 +22,11 @@ def main():
 
     print("NRRP-Generator. Choose settings:")
     config_paramter = {
-        "Number of Instances": get_number_of_instances(),
-        "Number of Nurses": get_number_of_nurses(),
-        "Complexity": get_complexity(),
-        "Planning Horizon": get_planning_horizon()
+        "Number of Instances": fr.get_number_of_instances(),
+        "Number of Nurses": fr.get_number_of_nurses(),
+        "Complexity On / Off Request": fr.get_complexity_onoff(),
+        "Complexity Nurse unavailable": fr.get_complexity_unav(),
+        "Planning Horizon": fr.get_planning_horizon()
     }
 
     print("\nSummary:")
@@ -108,9 +36,10 @@ def main():
 
     # Loop over instances
     for i in range(1, config_paramter["Number of Instances"] + 1):
-        on, off = get_complexity_value(config_paramter["Complexity"])
-        n_nurses = get_nurse_count(config_paramter["Number of Nurses"])
-        nurse_data = generate_nurse_data(
+        on, off = fr.get_complexity_value_onoff(config_paramter["Complexity On / Off Request"])
+        nurse_unav, min_unavs, max_unavs = fr.get_complexity_value_unav(config_paramter["Complexity Nurse unavailable"])
+        n_nurses = fr.get_nurse_count(config_paramter["Number of Nurses"])
+        nurse_data = fr.generate_nurse_data(
             n_nurses=n_nurses,  
             n_on_nurses=on, on_min_days=1, on_max_days=3,  
             n_off_nurses=off, off_min_days=2, off_max_days=4  
@@ -177,11 +106,10 @@ def main():
         #############################################################
 
 
-        ## Hier noch eine Loop einbauen? Damit alle Files angepackt werden.
         
         simulate_sick_days_for_file(
             filename=file, 
-            n_unav_nurses=1, unav_min_days=1, unav_max_days=2 , 
+            n_unav_nurses=nurse_unav, unav_min_days=min_unavs, unav_max_days=max_unavs,
             output_filename=file
         )
 
